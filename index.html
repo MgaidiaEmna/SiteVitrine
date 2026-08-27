@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emna Cars - Logiciel de gestion pour garages</title>
+<meta name="description" content="Logiciel en ligne pour garages et concessionnaires. Suivi automatique des paiements partiels : sachez qui vous doit quoi.">
+
+<link rel="icon" type="image/jpeg" sizes="100x100" href="img/logo1.png" ><style>
+/* ===== Base ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', Arial, sans-serif;
+  color: #253830;
+  background: #ffffff;
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+  
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ===== Boutons ===== */
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-green {
+  background: #2edd8b;
+  color: #063d26;
+}
+
+.btn-green:hover {
+  background: #24c579;
+}
+
+.btn-white {
+  background: #ffffff;
+  color: #16a06a;
+  border: 2px solid #2edd8b;
+}
+
+.btn-white:hover {
+  background: #eefbf4;
+}
+
+/* ===== Barre d'infos en haut ===== */
+.topbar {
+  background: #eafaf1;
+  border-bottom: 1px solid #cfeede;
+  font-size: 14px;
+  color: #1c6b47;
+}
+
+.topbar .container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.topbar span {
+  white-space: nowrap;
+}
+
+/* ===== Navigation ===== */
+.navbar {
+  position: sticky;
+  top: 0;
+  background: #ffffff;
+  border-bottom: 1px solid #e6ece9;
+  z-index: 10;
+}
+
+.navbar .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 20px;
+  color: #16a06a;
+}
+
+.logo img {
+  width: 38px;
+  height: 38px;
+}
+
+.menu {
+  display: flex;
+  gap: 28px;
+  font-size: 15px;
+}
+
+.menu a:hover {
+  color: #16a06a;
+}
+
+.nav-btn {
+  display: flex;
+  gap: 10px;
+}
+
+/* ===== Hero ===== */
+.hero {
+  padding: 70px 0;
+}
+
+.hero .container {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+}
+
+.hero-text {
+  flex: 1;
+}
+
+.hero-text h1 {
+  font-size: 40px;
+  line-height: 1.2;
+  margin-bottom: 18px;
+}
+
+.hero-text h1 .green {
+  color: #16a06a;
+}
+
+.hero-text p {
+  font-size: 18px;
+  color: #5a6b63;
+  margin-bottom: 28px;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.hero-note {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #7a8a82;
+}
+
+.hero-image {
+  flex: 1;
+}
+
+
+.screenshot {
+  height: 250px;
+  width: 550px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #021f13;
+  padding: 20px;
+  font-size: 15px;
+  border-radius: 20px; 
+  margin-top: 50px;
+  margin-bottom: 50px;
+
+}
+
+.screenshot small {
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+/* ===== Sections ===== */
+.section {
+  padding: 60px 0;
+}
+
+.section-gray {
+  background: #f5f9f7;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.section-title h2 {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+.section-title p {
+  color: #6b7d74;
+  font-size: 17px;
+}
+
+/* ===== Tableau "qui doit quoi" ===== */
+.ledger {
+  max-width: 650px;
+  margin: 0 auto;
+  background: #ffffff;
+  border: 1px solid #e6ece9;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.ledger-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid #eef2f0;
+}
+
+.ledger-row:last-child {
+  border-bottom: none;
+}
+
+.ledger-row .name {
+  font-weight: 600;
+}
+
+.ledger-row .name small {
+  display: block;
+  font-weight: 400;
+  color: #8a9992;
+  font-size: 13px;
+}
+
+.ledger-row .amount {
+  font-weight: 600;
+  margin-left: auto;
+  margin-right: 16px;
+}
+
+.tag {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.tag-red {
+  background: #ffe6e6;
+  color: #d33;
+}
+
+.tag-amber {
+  background: #fff2dd;
+  color: #cc8400;
+}
+
+.tag-green {
+  background: #e2fbee;
+  color: #16a06a;
+}
+
+/* ===== Fonctionnalites ===== */
+.features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.feature {
+  background: #ffffff;
+  border: 1px solid #e6ece9;
+  border-radius: 10px;
+  padding: 26px;
+}
+
+.feature:hover {
+  border-color: #2edd8b;
+}
+
+.feature .icon {
+  font-size: 28px;
+  margin-bottom: 12px;
+}
+
+.feature h3 {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.feature p {
+  color: #6b7d74;
+  font-size: 15px;
+}
+
+/* ===== Galerie ===== */
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 30px;
+    align-items: center;
+
+    
+}
+
+.gallery .img {
+    width: 100%;
+    height: 450px;
+    object-fit: contain;
+    display: block;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    transition: transform 0.3s ease;
+    border-radius: 20px;
+   
+}
+
+.gallery img:hover {
+    transform: scale(1.03);
+}
+
+
+/* ===== Tarif ===== */
+.price-box {
+  max-width: 400px;
+  margin: 0 auto;
+  background: #ffffff;
+  border: 2px solid #2edd8b;
+  border-radius: 14px;
+  padding: 36px;
+  text-align: center;
+}
+
+.price-box .trial {
+  display: inline-block;
+  background: #eafaf1;
+  color: #16a06a;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+
+.price-box .price {
+  font-size: 48px;
+  font-weight: 700;
+}
+
+.price-box .price span {
+  font-size: 18px;
+  color: #8a9992;
+  font-weight: 500;
+}
+
+.price-box .price-note {
+  color: #8a9992;
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+.price-list {
+  list-style: none;
+  text-align: left;
+  margin-bottom: 26px;
+}
+
+.price-list li {
+  padding: 8px 0;
+  padding-left: 28px;
+  position: relative;
+  font-size: 15px;
+}
+
+.price-list li:before {
+  content: "✓";
+  color: #16a06a;
+  font-weight: 700;
+  position: absolute;
+  left: 0;
+}
+
+.price-box .btn {
+  width: 100%;
+}
+
+/* ===== Formulaire ===== */
+.form-box {
+  max-width: 600px;
+  margin: 0 auto;
+  background: #ffffff;
+  border: 1px solid #e6ece9;
+  border-radius: 14px;
+  padding: 34px;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+}
+
+.form-group {
+  margin-bottom: 18px;
+  flex: 1;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid #d5ddd9;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 15px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #2edd8b;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+#form-message {
+  margin-top: 14px;
+  font-size: 15px;
+  display: none;
+}
+
+/* ===== Pied de page ===== */
+.footer {
+  background: #f5f9f7;
+  border-top: 1px solid #e6ece9;
+  padding: 40px 0;
+}
+
+.footer .container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.footer p {
+  color: #6b7d74;
+  font-size: 14px;
+  max-width: 300px;
+  margin-top: 8px;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  font-size: 14px;
+  color: #6b7d74;
+}
+
+.footer-links a:hover {
+  color: #16a06a;
+}
+
+.copyright {
+  text-align: center;
+  color: #8a9992;
+  font-size: 13px;
+  margin-top: 30px;
+}
+
+/* ===== Responsive (telephone) ===== */
+@media (max-width: 768px) {
+  .menu,
+  .nav-btn .btn-white {
+    display: none;
+  }
+
+  .hero .container {
+    flex-direction: column;
+  }
+
+  .hero-text h1 {
+    font-size: 30px;
+  }
+
+  .features {
+    grid-template-columns: 1fr;
+  }
+
+  .gallery {
+    grid-template-columns: 1fr;
+  }
+
+  .gallery img {
+    height: 220px;
+    
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .topbar .container {
+    justify-content: center;
+    text-align: center;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== Barre d'infos en haut ===== -->
+<div class="topbar">
+  <div class="container">
+    <span> Basés à Paris</span>
+    <span> Service rapide en cas de panne</span>
+    <span> On vous aide à immatriculer votre véhicule pour la première fois</span>
+  </div>
+</div>
+
+<!-- ===== Navigation ===== -->
+<div class="navbar">
+  <div class="container">
+    <a href="#" class="logo">
+      <img src="img/logo1.png" alt="Emna Cars" style="width: 100px; height: 60px;">
+      Emna Cars
+    </a>
+    <div class="menu">
+      <a href="#solution">Solution</a>
+      <a href="#fonctionnalites">Fonctionnalités</a>
+      <a href="#tarif">Tarif</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="nav-btn">
+      <a href="#contact" class="btn btn-white">Devis</a>
+      <a href="#tarif" class="btn btn-green">Essai gratuit</a>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Hero ===== -->
+<div class="hero">
+  <div class="container">
+    <div class="hero-text">
+      <h1>Sachez toujours <span class="green">qui vous doit quoi.</span></h1>
+      <p>Le logiciel des garages qui calcule le « reste à payer » automatiquement et l'affiche en couleur.</p>
+      <div class="hero-buttons">
+        <a href="#tarif" class="btn btn-green">Essayer gratuitement</a>
+        <a href="#contact" class="btn btn-white">Demander un devis</a>
+      </div>
+      <p class="hero-note">14 jours gratuits · sans carte bancaire · 100 % en ligne</p>
+    </div>
+    <div class="hero-image">
+      <div class="screenshot">
+        
+        <img src="img/dashbord.png" alt="Tableau de bord" style="height: 700px; width: 380px; border-radius: 20px;">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Solution ===== -->
+<div class="section section-gray" id="solution">
+  <div class="container">
+    <div class="section-title">
+      <h2>Fini le « qui m'a payé quoi ? »</h2>
+      <p>Chaque paiement est suivi tout seul. Un coup d'œil suffit.</p>
+    </div>
+    <div class="ledger">
+      <div class="ledger-row">
+        <div class="name">Garage Pro Auto <small>Fourgon utilitaire</small></div>
+        <div class="amount">8 400 €</div>
+        <span class="tag tag-red">Impayé</span>
+      </div>
+      <div class="ledger-row">
+        <div class="name">Karim B. <small>Berline occasion</small></div>
+        <div class="amount">1 250 €</div>
+        <span class="tag tag-amber">Partiel</span>
+      </div>
+      <div class="ledger-row">
+        <div class="name">Mme Dupont <small>Citadine neuve</small></div>
+        <div class="amount">0 €</div>
+        <span class="tag tag-green">Soldé</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Fonctionnalites ===== -->
+<div class="section" id="fonctionnalites">
+  <div class="container">
+    <div class="section-title">
+      <h2>Un seul outil, tout le garage</h2>
+    </div>
+    <div class="features">
+      <div class="feature">
+        <img src="img/credit-card.png" alt="Paiements partiels" style="width: 35px; height: 35px; margin-bottom: 12px;">
+        <h3>Paiements partiels</h3>
+        <p>Le « reste à payer » calculé et affiché partout, en rouge, ambre ou vert.</p>
+      </div>
+      <div class="feature">
+        <img src="img/car.png" alt="Voiture" style="width: 35px; height: 35px; margin-bottom: 12px;">
+        <h3>Inventaire véhicules</h3>
+        <p>Photos multiples, recherche et filtres. Voitures, motos, camions.</p>
+      </div>
+      <div class="feature">
+        <img src="img/invoice.png" alt="Factures conformes" style="width: 35px; height: 35px; ">
+        <h3>Factures conformes</h3>
+        <p>PDF légaux : TVA 20 % ou sur la marge, numérotation continue.</p>
+      </div>
+      <div class="feature">
+        <img src="img/bill.png" alt="CERFA pré-remplis" style="width: 35px; height: 35px; margin-bottom: 12px;">
+        <h3>CERFA pré-remplis</h3>
+        <p>Mandat d'immatriculation et cession, remplis tout seuls.</p>
+      </div>
+      <div class="feature">
+        <img src="img/customer.png" alt="Clients" style="width: 35px; height: 35px; margin-bottom: 12px;">
+        <h3>Clients</h3>
+        <p>Particuliers et professionnels, avec tout leur historique.</p>
+      </div>
+      <div class="feature">
+                <img src="img/securit.png" alt="Paiements partiels" style="width: 35px; height: 35px;">
+        <h3>Sécurité & RGPD</h3>
+        <p>Données isolées par garage, hébergées en Europe.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Galerie de captures ===== -->
+<div class="section section-gray" id="apercu">
+  <div class="container">
+    <div class="section-title">
+      <h2>Voyez le logiciel en vrai</h2>
+    </div>
+    <div class="gallery">
+      <img src="img/vehicule.png" alt="Fiche véhicule" >
+      <img src="img/inventaire.png" alt="Inventaire">
+      <img src="img/facture.png" alt="Facture PDF">
+    </div>
+  </div>
+</div>
+
+<!-- ===== Tarif ===== -->
+<div class="section" id="tarif">
+  <div class="container">
+    <div class="section-title">
+      <h2>Simple, sans surprise</h2>
+    </div>
+    <div class="price-box">
+      <div class="trial"> Essai gratuit 14 jours</div>
+      <div class="price">29 €<span> / mois</span></div>
+      <div class="price-note">sans carte bancaire pour l'essai · sans engagement</div>
+      <ul class="price-list">
+        <li>Suivi des paiements partiels illimité</li>
+        <li>Inventaire, clients & tableau de bord</li>
+        <li>Factures conformes & CERFA pré-remplis</li>
+        <li>Données en Europe, conformes RGPD</li>
+      </ul>
+      <a href="#contact" class="btn btn-green">Commencer l'essai gratuit</a>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Contact ===== -->
+<div class="section section-gray" id="contact">
+  <div class="container">
+    <div class="section-title">
+      <h2>Parlons de votre garage</h2>
+      <p>Laissez vos coordonnées, on vous recontacte vite.</p>
+    </div>
+    <div class="form-box">
+      <form id="contact-form">
+        <!-- Remplace par ta cle Web3Forms (voir instructions) -->
+        <input type="hidden" name="access_key" value="VOTRE_CLE_WEB3FORMS">
+        <input type="hidden" name="subject" value="Nouvelle demande - Emna Cars">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nom">Nom</label>
+            <input type="text" id="nom" name="nom" required>
+          </div>
+          <div class="form-group">
+            <label for="garage">Nom du garage</label>
+            <input type="text" id="garage" name="garage">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label for="tel">Téléphone</label>
+            <input type="tel" id="tel" name="telephone">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="Combien de véhicules gérez-vous ?"></textarea>
+        </div>
+        <button type="submit" class="btn btn-green">Envoyer ma demande</button>
+        <p id="form-message"></p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Pied de page ===== -->
+<div class="footer">
+  <div class="container">
+    <div>
+      <a href="#" class="logo">
+      <img src="img/logo1.png" alt="Emna Cars" style="width: 100px; height: 60px;">
+      Emna Cars
+    </a>
+      <p>Logiciel de gestion pour garages et concessionnaires. Basés à Paris, hébergé en Europe.</p>
+    </div>
+    <div class="footer-links">
+      <a href="#solution">Solution</a>
+      <a href="#fonctionnalites">Fonctionnalités</a>
+      <a href="#tarif">Tarif</a>
+      <a href="#contact">Contact</a>
+      <a href="https://app.emnacars.fr">Accéder à l'appli</a>
+      <a href="mentions-legales.html">Mentions légales</a>
+    </div>
+  </div>
+  <div class="copyright">© 2026 Emna Cars — Abdoumanai76@gmail.com</div>
+</div>
+
+<script>
+// Envoi du formulaire vers Web3Forms (arrive dans votre boite mail)
+var form = document.getElementById("contact-form");
+var message = document.getElementById("form-message");
+
+form.addEventListener("submit", function (e) {
+  e.preventDefault();
+  var button = form.querySelector("button");
+  button.textContent = "Envoi...";
+
+  var data = {
+    nom: document.getElementById("nom").value,
+    garage: document.getElementById("garage").value,
+    email: document.getElementById("email").value,
+    telephone: document.getElementById("tel").value,
+    message: document.getElementById("message").value
+  };
+
+  fetch("https://emnacars-mailer.vercel.app/api/send-email", { 
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  })
+    .then(function (res) { return res.json(); })
+    .then(function (result) {
+      if (result.success) {
+        message.textContent = "Merci ! Votre demande a bien été envoyée.";
+        message.style.color = "#16a06a";
+        form.reset();
+      } else {
+        message.textContent = "Erreur. Écrivez-nous à emnamgaidia@gmail.com";
+        message.style.color = "#d33";
+      }
+      message.style.display = "block";
+      button.textContent = "Envoyer ma demande";
+    })
+    .catch(function () {
+      message.textContent = "Erreur. Écrivez-nous à emnamgaidia@gmail.com";
+      message.style.color = "#d33";
+      message.style.display = "block";
+      button.textContent = "Envoyer ma demande";
+    });
+});
